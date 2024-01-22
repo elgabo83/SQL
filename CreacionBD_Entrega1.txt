@@ -1,0 +1,120 @@
+-- Crea la base de datos
+CREATE DATABASE StreetHouseDB;
+GO
+
+USE StreetHouseDB;
+
+-- Crea la tabla Categoria
+CREATE TABLE Categoria (
+    CategoriaID INT PRIMARY KEY IDENTITY(1,1),
+    Nombre VARCHAR(50) NOT NULL
+);
+
+-- Crea la tabla Producto
+CREATE TABLE Producto (
+    ProductoID INT PRIMARY KEY IDENTITY(1,1),
+    Nombre VARCHAR(50) NOT NULL,
+    Descripcion TEXT,
+    Precio DECIMAL(10, 2) NOT NULL,
+    CantidadStock INT NOT NULL,
+    Marca VARCHAR(50),
+    CategoriaID INT,
+    FOREIGN KEY (CategoriaID) REFERENCES Categoria(CategoriaID)
+);
+
+-- Crea la tabla Cliente
+CREATE TABLE Cliente (
+    ClienteID INT PRIMARY KEY IDENTITY(1,1),
+    Nombre VARCHAR(50) NOT NULL,
+    Apellido VARCHAR(50) NOT NULL,
+    CorreoElectronico VARCHAR(255) NOT NULL,
+    DireccionEnvio TEXT,
+    InformacionPago TEXT
+);
+
+-- Crea la tabla Pedido
+CREATE TABLE Pedido (
+    PedidoID INT PRIMARY KEY IDENTITY(1,1),
+    ClienteID INT,
+    FechaPedido DATE,
+    EstadoPedido VARCHAR(50) NOT NULL,
+    FOREIGN KEY (ClienteID) REFERENCES Cliente(ClienteID)
+);
+
+-- Crea la tabla DetallePedido
+CREATE TABLE DetallePedido (
+    DetallePedidoID INT PRIMARY KEY IDENTITY(1,1),
+    PedidoID INT,
+    ProductoID INT,
+    Cantidad INT,
+    PrecioUnitario DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (PedidoID) REFERENCES Pedido(PedidoID),
+    FOREIGN KEY (ProductoID) REFERENCES Producto(ProductoID)
+);
+
+-- Crea la tabla Opinion
+CREATE TABLE Opinion (
+    OpinionID INT PRIMARY KEY IDENTITY(1,1),
+    ClienteID INT,
+    ProductoID INT,
+    Comentario TEXT,
+    Puntuacion INT,
+    FOREIGN KEY (ClienteID) REFERENCES Cliente(ClienteID),
+    FOREIGN KEY (ProductoID) REFERENCES Producto(ProductoID)
+);
+
+-- Crea la tabla Descuento
+CREATE TABLE Descuento (
+    DescuentoID INT PRIMARY KEY IDENTITY(1,1),
+    CodigoDescuento VARCHAR(50) UNIQUE,
+    PorcentajeDescuento DECIMAL(5, 2),
+    FechaInicio DATE,
+    FechaFin DATE,
+    PedidoID INT,
+    FOREIGN KEY (PedidoID) REFERENCES Pedido(PedidoID)
+);
+
+-- Crea la tabla Envio
+CREATE TABLE Envio (
+    EnvioID INT PRIMARY KEY IDENTITY(1,1),
+    PedidoID INT,
+    DireccionEnvio TEXT,
+    MetodoEnvio VARCHAR(50),
+    EstadoEnvio VARCHAR(50),
+    FOREIGN KEY (PedidoID) REFERENCES Pedido(PedidoID)
+);
+
+-- Crea la tabla ValoracionProducto
+CREATE TABLE ValoracionProducto (
+    ValoracionProductoID INT PRIMARY KEY IDENTITY(1,1),
+    ProductoID INT,
+    CantidadValoraciones INT,
+    ValoracionPromedio DECIMAL(3, 2),
+    FOREIGN KEY (ProductoID) REFERENCES Producto(ProductoID)
+);
+
+-- Crea la tabla Talla
+CREATE TABLE Talla (
+    TallaID INT PRIMARY KEY IDENTITY(1,1),
+    Nombre VARCHAR(10) UNIQUE
+);
+
+-- Crea la tabla ProductoTalla
+CREATE TABLE ProductoTalla (
+    ProductoTallaID INT PRIMARY KEY IDENTITY(1,1),
+    ProductoID INT,
+    TallaID INT,
+    CantidadStock INT,
+    FOREIGN KEY (ProductoID) REFERENCES Producto(ProductoID),
+    FOREIGN KEY (TallaID) REFERENCES Talla(TallaID)
+);
+
+-- Crea la tabla Usuario
+CREATE TABLE Usuario (
+    UsuarioID INT PRIMARY KEY IDENTITY(1,1),
+    NombreUsuario VARCHAR(50),
+    Contraseña VARCHAR(50),
+    Email VARCHAR(50),
+    ClienteID INT,
+    FOREIGN KEY (ClienteID) REFERENCES Cliente(ClienteID)
+);
