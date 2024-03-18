@@ -4,6 +4,7 @@ Repositorio para ir dejando la informacion relevante a las entregas del curso de
 
 # Se actualiza el repositorio con la entrega del proyecto final la cual consta de:
 
+      # Script de Creacion de Base de Datos
       # Script de Insercion de datos en la base
       # Script de creacion de Vistas
       # Script de creacion de Funciones
