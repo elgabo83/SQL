@@ -1,0 +1,58 @@
+Creacion de usuarios a nivel de servidor:
+
+-- Crear login usuario1Login
+CREATE LOGIN usuario1Login WITH PASSWORD = 'password1';
+GO
+
+-- Crear login usuario2Login
+CREATE LOGIN usuario2Login WITH PASSWORD = 'password2';
+GO
+
+-- Crear login usuario3Login
+CREATE LOGIN usuario3Login WITH PASSWORD = 'password3';
+GO
+
+
+USE StreetHouseDB;
+GO
+
+-- Asociar usuarios existentes a la base de datos
+CREATE USER user1 FOR LOGIN usuario1Login;
+CREATE USER user2 FOR LOGIN usuario2Login;
+CREATE USER user3 FOR LOGIN usuario3Login;
+GO
+
+
+Permisos de Lectura sobre tablas Categoria y Producto(user1)
+
+GRANT SELECT ON Categoria TO user1;
+GRANT SELECT ON Producto TO user1;
+GO
+
+
+Permisos de Lectura/Escritura sobre todas las tablas (user2)
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON DATABASE::StreetHouseDB TO user2;
+GO
+
+
+Permisos de lectura/eliminación sobre todas las tablas (user3)
+
+GRANT SELECT, DELETE ON DATABASE::StreetHouseDB TO usuario3;
+GO
+
+
+Eliminar user3 y configurar los permisos de este a user2
+
+-- Revocar permisos de user3
+REVOKE SELECT, DELETE ON DATABASE::StreetHouseDB FROM user3;
+GO
+
+-- Eliminar user3
+DROP USER user3;
+GO
+
+
+
+
+
